@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.NewEntryFormController" hgap="10" vgap="10" padding="20">
+    <Label text="Name:"/>
+    <TextField fx:id="nameField" GridPane.columnIndex="1" />
+
+    <Label text="Tác giả:" GridPane.rowIndex="1"/>
+    <TextField fx:id="authorField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="Price:" GridPane.rowIndex="2"/>
+    <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Ngày xuất bản:" GridPane.rowIndex="3"/>
+    <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+</GridPane>

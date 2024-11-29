@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.Scene?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vBox">
+
+    <!-- Áp dụng CSS cho MenuBar -->
+    <MenuBar fx:id="menuBar" styleClass="menu-bar">
+        <Menu text="File">
+            <MenuItem fx:id="newItem" text="New"/>
+        </Menu>
+    </MenuBar>
+
+    <!-- Áp dụng CSS cho TableView -->
+    <TableView fx:id="bookTableView" styleClass="table-view">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Tên sách"/>
+            <TableColumn fx:id="authorColumn" text="Tác giả"/>
+            <TableColumn fx:id="priceColumn" text="Giá"/>
+            <TableColumn fx:id="dateColumn" text="Ngày xuất bản"/>
+        </columns>
+    </TableView>
+
+</VBox>
