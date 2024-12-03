@@ -77,7 +77,14 @@ public class NewEntryFormController {
 
             // Check if fields are not empty
             if (!name.isEmpty() && !author.isEmpty() && !price.isEmpty() && !publishDate.isEmpty()) {
-                bookList.add(new Book(name, author, price, publishDate));
+                // Create new book object
+                Book newBook = new Book(name, author, price, publishDate);
+
+                // Add book to the database
+                DatabaseHelper.addBook(newBook);
+
+                // Add to ObservableList for UI update
+                bookList.add(newBook);
 
                 // Clear the input fields for the next entry
                 nameField.clear();
@@ -101,5 +108,4 @@ public class NewEntryFormController {
         newStage.setScene(newScene);
         newStage.setTitle("New Book Entry");
         newStage.show();
-    }
-}
+    }}

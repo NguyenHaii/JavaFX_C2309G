@@ -1,0 +1,43 @@
+/* CSS for the VBox container */
+VBox {
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-background-color: #f0f0f5;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+/* CSS for the TextFields */
+.text-field {
+    -fx-pref-width: 250px;
+    -fx-padding: 10;
+    -fx-border-color: #b3b3b3;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+}
+
+/* CSS for buttons */
+.button {
+    -fx-pref-width: 120px;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-text-fill: white;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.button:cancel {
+    -fx-background-color: #f44336; /* Red */
+}
+
+.button:cancel:hover {
+    -fx-background-color: #d32f2f;
+}

@@ -1,135 +1,33 @@
-/* Nút (Button) */
+/* HBox chứa các nút New, Edit, Delete */
+.hbox {
+    spacing: 0px;  /* Không có khoảng cách giữa các nút */
+    alignment: CENTER_LEFT;  /* Căn chỉnh các nút sang bên trái */
+}
+
+/* Các nút trong HBox */
 .button {
-    -fx-background-color: #2E4A46; /* Màu nền của nút */
-    -fx-text-fill: white;
-    -fx-padding: 10px 20px;
-    -fx-font-size: 14px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand;
-    -fx-transition: all 0.3s ease-in-out;
+    background-color: #757575; /* Màu nền của các nút */
+    color: white; /* Màu chữ */
+    padding: 10px 20px; /* Khoảng cách bên trong nút */
+    border: none; /* Không có viền */
+    border-radius: 5px; /* Làm tròn các góc của nút */
+    font-size: 14px; /* Kích thước font chữ */
+    cursor: pointer; /* Thêm hiệu ứng con trỏ khi hover vào nút */
+    margin: 0; /* Loại bỏ khoảng cách ngoài các nút */
 }
 
-/* Hiệu ứng khi hover vào nút */
+/* Màu nền khi hover */
 .button:hover {
-    -fx-background-color: #3a5d58; /* Màu nền thay đổi khi hover */
-    -fx-scale-x: 1.1; /* Scale X khi di chuột vào */
-    -fx-scale-y: 1.1; /* Scale Y khi di chuột vào */
+    background-color: #616161; /* Màu nền khi hover */
 }
 
-/* Hiệu ứng khi nhấn nút */
-.button:pressed {
-    -fx-background-color: #1c3d35; /* Màu nền khi nhấn nút */
-    -fx-scale-x: 0.95; /* Thu nhỏ khi nhấn */
-    -fx-scale-y: 0.95; /* Thu nhỏ khi nhấn */
+/* Các nút không có border */
+.button:focus, .button:active {
+    outline: none; /* Loại bỏ đường viền khi nút được nhấn hoặc focus */
 }
 
-/* Các hiệu ứng chuyển động */
-@keyframes slideIn {
-    from {
-        -fx-translate-x: -100%;
-    }
-    to {
-        -fx-translate-x: 0;
-    }
-}
-
-.slide-in {
-    -fx-transition: translateX 0.5s ease-out;
-}
-
-
-/* Styling for the TableView */
-.table-view {
-    -fx-background-color: #f9f9f9;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, #aaa, 3, 0.7, 0, 1);
-    -fx-font-size: 14px;
-}
-
-/* Styling for Table Columns */
-.table-column {
-    -fx-text-fill: #333;
-    -fx-font-weight: bold;
-}
-
-/* Hover effect for Table Rows */
-.table-view .table-row-cell:hover {
-    -fx-background-color: #f0f0f0; /* Light gray on hover */
-    -fx-font-size: 14px;
-    -fx-cursor: pointer;
-    -fx-effect: dropshadow(gaussian, #888, 5, 0.7, 0, 1);
-}
-
-/* Styling for Buttons */
-.button {
-    -fx-background-color: #4f7b8f; /* Matching blue-gray for buttons */
-    -fx-text-fill: white;
-    -fx-padding: 10px 20px;
-    -fx-font-size: 14px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-cursor: hand;
-    -fx-transition: all 0.3s ease-in-out;
-}
-
-/* Hover effect for Buttons */
-.button:hover {
-    -fx-background-color: #3a6277; /* Darker shade on hover */
-    -fx-transform: scale(1.1); /* Slightly enlarge on hover */
-}
-
-/* Pressed state for Buttons */
-.button:pressed {
-    -fx-background-color: #2f4e58; /* Even darker shade when pressed */
-    -fx-transform: scale(0.98); /* Shrink when clicked */
-}
-
-/* Styling for TextFields */
-.text-field {
-    -fx-background-color: #f0f0f0;
-    -fx-border-color: #ccc;
-    -fx-border-radius: 8px;
-    -fx-padding: 10px;
-    -fx-font-size: 14px;
-    -fx-text-fill: #333;
-}
-
-/* Hover effect for TextFields */
-.text-field:hover {
-    -fx-border-color: #58a6d6; /* Blue border on hover */
-}
-
-/* Styling for Labels */
-.label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #333;
-}
-
-/* Styling for the Stage/Window */
-.root {
-    -fx-background-color: #f2f2f2;
-    -fx-padding: 20px;
-}
-
-/* Slide-in animation for side panels */
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-.slide-in {
-    animation: slideIn 0.5s ease-out;
-}
-
-/* Styling for the Stage (window) shadow effect */
-.stage {
-    -fx-effect: dropshadow(gaussian, #444, 10, 0.7, 0, 0);
-    -fx-background-color: white;
-    -fx-border-radius: 10px;
+/* Căn chỉnh các nút liên tiếp nhau */
+.hbox .button {
+    display: inline-block; /* Các nút sẽ nằm trên cùng một hàng */
+    margin: 0; /* Loại bỏ margin giữa các nút */
 }

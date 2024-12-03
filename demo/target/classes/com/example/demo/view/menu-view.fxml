@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.Scene?>
+<?import javafx.scene.layout.HBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vBox">
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="vBox">
 
-    <!-- Áp dụng CSS cho MenuBar -->
-    <MenuBar fx:id="menuBar" styleClass="menu-bar">
-        <Menu text="File">
-            <MenuItem fx:id="newItem" text="New"/>
-        </Menu>
-    </MenuBar>
+    <!-- HBox chứa các nút New, Edit, Delete -->
+    <HBox fx:id="hbox" spacing="0" alignment="CENTER_LEFT" styleClass="hbox">
+        <Button fx:id="newItem" text="New" styleClass="button" />
+        <Button fx:id="editForm" text="Edit" styleClass="button" />
+        <Button fx:id="deleteForm" text="Delete" styleClass="button" />
+    </HBox>
 
-    <!-- Áp dụng CSS cho TableView -->
+    <!-- TableView hiển thị danh sách sách -->
     <TableView fx:id="bookTableView" styleClass="table-view">
         <columns>
-            <TableColumn fx:id="nameColumn" text="Tên sách"/>
-            <TableColumn fx:id="authorColumn" text="Tác giả"/>
-            <TableColumn fx:id="priceColumn" text="Giá"/>
-            <TableColumn fx:id="dateColumn" text="Ngày xuất bản"/>
+            <TableColumn fx:id="nameColumn" text="Tên sách" />
+            <TableColumn fx:id="authorColumn" text="Tác giả" />
+            <TableColumn fx:id="priceColumn" text="Giá" />
+            <TableColumn fx:id="dateColumn" text="Ngày xuất bản" />
         </columns>
     </TableView>
 

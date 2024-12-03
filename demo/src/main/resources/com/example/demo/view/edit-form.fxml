@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.EditFormController">
+    <TextField fx:id="nameField" promptText="Book Name"/>
+    <TextField fx:id="authorField" promptText="Author"/>
+    <TextField fx:id="priceField" promptText="Price"/>
+    <TextField fx:id="dateField" promptText="Publish Date"/>
+
+    <Button text="Save"/>
+    <Button text="Cancel"/>
+</VBox>

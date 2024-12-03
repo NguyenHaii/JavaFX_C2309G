@@ -11,10 +11,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
 public class MenuController {
 
+    public MenuController() {
+        // Constructor mặc định cần có nếu sử dụng FXMLLoader.
+    }
+
     @FXML
-    private MenuItem newItem;
+    private Button newItem;
+
+    @FXML
+    private Button editForm;
+
+    @FXML
+    private Button deleteForm;
 
     @FXML
     private TableView<Book> bookTableView;
@@ -34,15 +46,15 @@ public class MenuController {
 
     public MenuController(Stage stage) {
         this.primaryStage = stage;
-        this.bookList = FXCollections.observableArrayList(
-                new Book("17 Âm 1", "Giấu tên", "100,000 VND", "2024-01-01"),
-                new Book("Lời Nguyền Huyết Ngải", "Trịnh Linh", "120,000 VND", "2023-12-15"),
-                new Book("Biệt Thự Trắng", "Thanh Huyền", "150,000 VND", "2022-11-20")
-        );
+        this.bookList = FXCollections.observableArrayList();  // Khởi tạo danh sách trống
     }
 
     @FXML
     public void initialize() {
+        // Lấy dữ liệu từ cơ sở dữ liệu
+        this.bookList = DatabaseHelper.getAllBooks();
+
+        // Gắn dữ liệu vào bảng
         nameColumn.setCellValueFactory(data -> data.getValue().nameProperty());
         authorColumn.setCellValueFactory(data -> data.getValue().authorProperty());
         priceColumn.setCellValueFactory(data -> data.getValue().priceProperty());
@@ -50,6 +62,8 @@ public class MenuController {
 
         bookTableView.setItems(bookList);
     }
+
+
 
     public void showMenu() {
         try {
@@ -59,7 +73,30 @@ public class MenuController {
 
             System.out.println("FXML loaded successfully");
 
+            // Xử lý sự kiện thêm mới sách
             newItem.setOnAction(e -> NewEntryFormController.showNewForm(bookList));
+
+            // Xử lý sự kiện chỉnh sửa sách
+            editForm.setOnAction(e -> {
+                Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    EditFormController.showEditForm(selectedBook, bookList);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a book to edit!", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            });
+
+            // Xử lý sự kiện xóa sách
+            deleteForm.setOnAction(e -> {
+                Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    DeleteFormController.showDeleteForm(selectedBook, bookList);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a book to delete!", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            });
 
             Scene scene = new Scene(vBox, 600, 400);
             scene.getStylesheets().add(getClass().getResource("/com/example/demo/view/style.css").toExternalForm());
@@ -70,4 +107,6 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
+
 }

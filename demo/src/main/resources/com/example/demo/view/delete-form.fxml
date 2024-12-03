@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.DeleteFormController">
+    <Label text="Are you sure you want to delete this book?"/>
+    <Button fx:id="deleteButton" text="Delete" onAction="#deleteBook"/>
+    <Button fx:id="cancelButton" text="Cancel" onAction="#cancel"/>
+</VBox>
