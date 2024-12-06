@@ -69,38 +69,46 @@ public class NewEntryFormController {
 
         // Action for the save button
         saveButton.setOnAction(e -> {
-            // Add the new book to the list
+            // Lấy dữ liệu từ các trường nhập
             String name = nameField.getText();
             String author = authorField.getText();
             String price = priceField.getText();
             String publishDate = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
 
-            // Check if fields are not empty
-            if (!name.isEmpty() && !author.isEmpty() && !price.isEmpty() && !publishDate.isEmpty()) {
-                // Create new book object
-                Book newBook = new Book(name, author, price, publishDate);
-
-                // Add book to the database
-                DatabaseHelper.addBook(newBook);
-
-                // Add to ObservableList for UI update
-                bookList.add(newBook);
-
-                // Clear the input fields for the next entry
-                nameField.clear();
-                authorField.clear();
-                priceField.clear();
-                datePicker.setValue(null);
-
-                // Optionally, you can add a confirmation message or alert
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Book added successfully! You can add another book.", ButtonType.OK);
-                alert.showAndWait();
-            } else {
-                // Show alert if fields are empty
+            // Kiểm tra các trường nhập không rỗng
+            if (name.isEmpty() || author.isEmpty() || price.isEmpty() || publishDate.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "All fields must be filled out", ButtonType.OK);
                 alert.showAndWait();
+                return;
             }
+
+            // Kiểm tra ngày hợp lệ
+            if (datePicker.getValue() != null && datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Publication date cannot be in the future!", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+            // Tạo đối tượng Book mới
+            Book newBook = new Book(name, author, price, publishDate);
+
+            // Thêm sách vào cơ sở dữ liệu
+            DatabaseHelper.addBook(newBook);
+
+            // Cập nhật ObservableList để hiển thị trong UI
+            bookList.add(newBook);
+
+            // Xóa dữ liệu trong các trường nhập sau khi thêm thành công
+            nameField.clear();
+            authorField.clear();
+            priceField.clear();
+            datePicker.setValue(null);
+
+            // Hiển thị thông báo thành công
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Book added successfully! You can add another book.", ButtonType.OK);
+            alert.showAndWait();
         });
+
 
         // Set the scene with the applied CSS
         Scene newScene = new Scene(gridPane, 350, 250);

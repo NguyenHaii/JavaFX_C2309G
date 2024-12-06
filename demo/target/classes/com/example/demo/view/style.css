@@ -31,3 +31,38 @@
     display: inline-block; /* Các nút sẽ nằm trên cùng một hàng */
     margin: 0; /* Loại bỏ margin giữa các nút */
 }
+.hbox {
+    spacing: 10px;
+    alignment: center-left;
+}
+
+.button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-padding: 5 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.text-field, .combo-box {
+    -fx-padding: 5 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+/* Định dạng cho HBox chứa logo và tiêu đề */
+#hboxTitle {
+    padding: 10px;
+    align-items: center;
+}
+
+/* Logo */
+#logo {
+    margin-right: 10px;
+}
+
+/* Tiêu đề */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}

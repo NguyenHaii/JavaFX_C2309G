@@ -8,7 +8,7 @@ import java.sql.*;
 public class DatabaseHelper {
 
     private static final String URL = "jdbc:mysql://localhost:4306/book";  // Cập nhật URL theo cơ sở dữ liệu
-    private static final String USER = "pma";  // Tên đăng nhập của bạn
+    private static final String USER = "root";  // Tên đăng nhập của bạn
     private static final String PASSWORD = "";  // Mật khẩu của bạn
 
     public static Connection connect() throws SQLException {
@@ -85,4 +85,48 @@ public class DatabaseHelper {
             e.printStackTrace();
         }
     }
+    public static ObservableList<Book> filterBooks(String author, String priceRange) {
+        ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
+        String query = "SELECT name, author, price, date FROM books WHERE 1=1";
+
+        // Bổ sung điều kiện nếu tiêu chí không rỗng
+        if (author != null && !author.isEmpty()) {
+            query += " AND LOWER(author) LIKE ?";
+        }
+        if (priceRange != null && !priceRange.isEmpty()) {
+            if (priceRange.equals("<200000")) {
+                query += " AND price < 200000";
+            } else if (priceRange.equals("200000-500000")) {
+                query += " AND price BETWEEN 200000 AND 500000";
+            } else if (priceRange.equals(">500000")) {
+                query += " AND price > 500000";
+            }
+        }
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            int paramIndex = 1;
+
+            if (author != null && !author.isEmpty()) {
+                pstmt.setString(paramIndex++, "%" + author.toLowerCase() + "%");
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String bookName = rs.getString("name");
+                    String bookAuthor = rs.getString("author");
+                    String bookPrice = rs.getString("price");
+                    String publishDate = rs.getString("date");
+
+                    filteredBooks.add(new Book(bookName, bookAuthor, bookPrice, publishDate));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return filteredBooks;
+    }
+
+
 }
