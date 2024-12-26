@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.quanlychitieu.ui.MainLayoutController">
+    <SplitPane dividerPositions="0.2">
+        <!-- Left Menu -->
+        <items>
+            <!-- Right Content Area -->
+            <AnchorPane fx:id="contentArea">
+                <VBox spacing="20" alignment="TOP_LEFT">
+                    <TabPane fx:id="tabPane" prefWidth="600" prefHeight="400">
+                        <!-- Tab for List -->
+                        <Tab text="Danh Sách">
+                            <content>
+                                <VBox>
+                                    <TableView fx:id="expenseTable"/>
+                                    <TableView fx:id="incomeTable"/>
+                                </VBox>
+                            </content>
+                        </Tab>
+
+                        <!-- Tab for Add -->
+                        <Tab text="Thêm">
+                            <content>
+                                <VBox spacing="10">
+                                    <TextField fx:id="amountField" promptText="Số Tiền"/>
+                                    <ComboBox fx:id="categoryComboBox" promptText="Danh Mục"/>
+                                    <DatePicker fx:id="datePicker"/>
+                                    <ComboBox fx:id="typeComboBox" promptText="Loại Chi/Thu"/>
+                                    <Button text="Thêm Chi Tiêu" onAction="#addExpense"/>
+                                    <Button text="Thêm Thu Nhập" onAction="#addIncome"/>
+                                </VBox>
+                            </content>
+                        </Tab>
+
+                        <!-- Tab for Revenue -->
+                        <Tab text="Doanh Thu">
+                            <content>
+                                <VBox>
+                                    <Label fx:id="totalLabel" text="Tổng Chi: 0 | Tổng Thu: 0"/>
+                                    <Label fx:id="revenueLabel" text="Tổng Doanh Thu: 0"/>
+                                    <Button text="Tính Doanh Thu" onAction="#calculateRevenue"/>
+                                </VBox>
+                            </content>
+                        </Tab>
+                    </TabPane>
+                </VBox>
+            </AnchorPane>
+        </items>
+    </SplitPane>
+</AnchorPane>
