@@ -5,9 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Expense implements Comparable<Expense> {
-    private ObjectProperty<Double> amount;  // Use DoubleProperty for amount
+    private ObjectProperty<Double> amount;  // Use ObjectProperty for amount
     private ObjectProperty<String> category;
     private ObjectProperty<LocalDate> date;
     private ObjectProperty<Type> type;  // Enum to distinguish expense or income
@@ -57,6 +58,32 @@ public class Expense implements Comparable<Expense> {
 
     @Override
     public int compareTo(Expense other) {
-        return this.date.get().compareTo(other.date.get());
+        // Compare by type first, then category, then amount, and finally date
+        int typeComparison = this.getType().compareTo(other.getType());
+        if (typeComparison != 0) return typeComparison;
+
+        int categoryComparison = this.getCategory().compareTo(other.getCategory());
+        if (categoryComparison != 0) return categoryComparison;
+
+        int amountComparison = Double.compare(this.getAmount(), other.getAmount());
+        if (amountComparison != 0) return amountComparison;
+
+        return this.getDate().compareTo(other.getDate());  // Compare by date if all other fields are equal
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Expense expense = (Expense) obj;
+        return Double.compare(expense.getAmount(), getAmount()) == 0 &&
+                Objects.equals(getCategory(), expense.getCategory()) &&
+                Objects.equals(getDate(), expense.getDate()) &&
+                getType() == expense.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAmount(), getCategory(), getDate(), getType());
     }
 }

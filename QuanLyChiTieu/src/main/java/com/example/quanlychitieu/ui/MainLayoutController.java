@@ -3,12 +3,14 @@ package com.example.quanlychitieu.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import com.example.quanlychitieu.models.BinaryTree;
 import com.example.quanlychitieu.models.Expense;
 import com.example.quanlychitieu.services.ExpenseService;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class MainLayoutController {
     @FXML
@@ -29,6 +31,12 @@ public class MainLayoutController {
     private Label revenueLabel;
     @FXML
     private Button calculateRevenueButton;
+    @FXML
+    private PieChart expenseChart;  // Đổi BarChart thành PieChart
+    @FXML
+    private PieChart incomeChart;   // Đổi BarChart thành PieChart
+    @FXML
+    private TabPane tabPane;
 
     private BinaryTree<Expense> expenseTree;
     private BinaryTree<Expense> incomeTree;
@@ -36,6 +44,7 @@ public class MainLayoutController {
     public void initialize() {
         expenseTree = new BinaryTree<>();
         incomeTree = new BinaryTree<>();
+
 
         // Set options for typeComboBox
         typeComboBox.getItems().setAll(Expense.Type.CHI, Expense.Type.THU);
@@ -67,13 +76,15 @@ public class MainLayoutController {
         ObservableList<Expense> filteredExpenses = FXCollections.observableArrayList();
 
         if (type == Expense.Type.CHI) {
-            filteredExpenses.addAll(expenseTree.inOrderTraversal());
+            filteredExpenses.setAll(expenseTree.inOrderTraversal());
         } else {
-            filteredExpenses.addAll(incomeTree.inOrderTraversal());
+            filteredExpenses.setAll(incomeTree.inOrderTraversal());
         }
 
-        table.setItems(filteredExpenses);
+        table.setItems(filteredExpenses);  // Cập nhật bảng với dữ liệu mới
     }
+
+
 
     private void updateCategoryOptions() {
         Expense.Type selectedType = typeComboBox.getValue();
@@ -92,7 +103,7 @@ public class MainLayoutController {
             showError("Chọn loại Chi trước khi thêm.");
             return;
         }
-        addRecord(selectedType);
+        addRecord(Expense.Type.CHI);
     }
 
     public void addIncome() {
@@ -101,7 +112,7 @@ public class MainLayoutController {
             showError("Chọn loại Thu trước khi thêm.");
             return;
         }
-        addRecord(selectedType);
+        addRecord(Expense.Type.THU);
     }
 
     private void addRecord(Expense.Type type) {
@@ -114,26 +125,55 @@ public class MainLayoutController {
                 throw new IllegalArgumentException("Vui lòng điền đầy đủ thông tin.");
             }
 
+            // Check if expense or income is already in the tree (to avoid duplicates)
             Expense expense = new Expense(amount, category, date, type);
 
             if (type == Expense.Type.CHI) {
-                expenseTree.add(expense);
+                if (!expenseTree.contains(expense)) {
+                    expenseTree.add(expense);  // Add expense only if not already in the tree
+                } else {
+                    showError("Chi tiêu này đã tồn tại.");
+                    return;
+                }
             } else {
-                incomeTree.add(expense);
+                if (!incomeTree.contains(expense)) {
+                    incomeTree.add(expense);  // Add income only if not already in the tree
+                } else {
+                    showError("Thu nhập này đã tồn tại.");
+                    return;
+                }
             }
 
-            updateTotalLabel();
-            setupTable(expenseTable, Expense.Type.CHI);
-            setupTable(incomeTable, Expense.Type.THU);
+            // Cập nhật bảng và biểu đồ sau khi thêm dữ liệu
+            updateTableAndCharts();  // Đảm bảo bảng và biểu đồ được cập nhật
 
+            // Xóa dữ liệu sau khi thêm thành công
             amountField.clear();
             categoryComboBox.setValue(null);
             datePicker.setValue(null);
             typeComboBox.setValue(null);
+
         } catch (Exception e) {
             showError("Vui lòng kiểm tra lại số tiền, danh mục và ngày!");
         }
     }
+
+
+
+
+
+    private void updateTableAndCharts() {
+        // Cập nhật bảng
+        setupTable(expenseTable, Expense.Type.CHI);
+        setupTable(incomeTable, Expense.Type.THU);
+
+        // Cập nhật biểu đồ
+        updateExpenseChart();
+        updateIncomeChart();
+        updateTotalLabel();
+    }
+
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -149,6 +189,45 @@ public class MainLayoutController {
         totalLabel.setText("Tổng Chi: " + totalExpense + " | Tổng Thu: " + totalIncome);
     }
 
+    private void updateExpenseChart() {
+        // Cập nhật biểu đồ chi tiêu
+        expenseChart.getData().clear();
+        ObservableList<PieChart.Data> expenseData = FXCollections.observableArrayList();
+
+        double totalExpense = expenseTree.inOrderTraversal().stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
+
+        expenseTree.inOrderTraversal().stream()
+                .collect(Collectors.groupingBy(Expense::getCategory, Collectors.summingDouble(Expense::getAmount)))
+                .forEach((category, totalAmount) -> {
+                    double percentage = (totalAmount / totalExpense) * 100;
+                    PieChart.Data data = new PieChart.Data(category + " (" + String.format("%.1f", percentage) + "%)", totalAmount);
+                    expenseData.add(data);
+                });
+
+        expenseChart.setData(expenseData);
+    }
+
+    private void updateIncomeChart() {
+        // Cập nhật biểu đồ thu nhập
+        incomeChart.getData().clear();
+        ObservableList<PieChart.Data> incomeData = FXCollections.observableArrayList();
+
+        double totalIncome = incomeTree.inOrderTraversal().stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
+
+        incomeTree.inOrderTraversal().stream()
+                .collect(Collectors.groupingBy(Expense::getCategory, Collectors.summingDouble(Expense::getAmount)))
+                .forEach((category, totalAmount) -> {
+                    double percentage = (totalAmount / totalIncome) * 100;
+                    PieChart.Data data = new PieChart.Data(category + " (" + String.format("%.1f", percentage) + "%)", totalAmount);
+                    incomeData.add(data);
+                });
+
+        incomeChart.setData(incomeData);
+    }
     @FXML
     private void calculateRevenue() {
         double totalExpense = expenseTree.inOrderTraversal().stream().mapToDouble(Expense::getAmount).sum();
@@ -158,23 +237,4 @@ public class MainLayoutController {
         revenueLabel.setText("Tổng Doanh Thu: " + (revenue < 0 ? revenue : "+" + revenue));
     }
 
-    // Actions for menu buttons
-    @FXML
-    private void showList() {
-        // Show list of expenses and incomes
-        setupTable(expenseTable, Expense.Type.CHI);
-        setupTable(incomeTable, Expense.Type.THU);
-    }
-
-    @FXML
-    private void showAdd() {
-        // Show add expense and income form (right panel with input fields)
-        // You may want to clear or focus the form elements here
-    }
-
-    @FXML
-    private void showRevenue() {
-        // Show revenue calculation (triggering revenue calculation)
-        calculateRevenue();
-    }
 }
