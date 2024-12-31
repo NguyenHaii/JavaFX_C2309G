@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
+
+<?import java.net.URL?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.quanlychitieu.ui.MainLayoutController">
+    <stylesheets>
+        <URL value="@../styles/chart-styles.css"/>
+    </stylesheets>
+
+    <children>
+        <!-- MenuBar at the top -->
+        <MenuBar>
+            <Menu text="Chức Năng">
+                <MenuItem text="Danh Sách" onAction="#showDanhSachTab"/>
+                <MenuItem text="Thêm" onAction="#showThemTab"/>
+                <MenuItem text="Doanh Thu" onAction="#showDoanhThuTab"/>
+                <MenuItem text="Biểu Đồ" onAction="#showBieuDoTab"/>
+                <MenuItem text="Lọc" onAction="#showLocTab"/>
+                <MenuItem text="Tìm Kiếm" onAction="#showTimKiemTab"/>
+            </Menu>
+        </MenuBar>
+
+        <!-- TabPane for content -->
+        <TabPane fx:id="tabPane" prefWidth="600" prefHeight="600" styleClass="tab-pane-with-border"
+                 AnchorPane.topAnchor="30" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+            <tabs>
+                <Tab fx:id="danhSachTab" text="Danh Sách" styleClass="tab-with-border">
+                    <content>
+                        <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
+                            <TableView fx:id="expenseTable" prefHeight="200" prefWidth="500"/>
+                            <TableView fx:id="incomeTable" prefHeight="200" prefWidth="500"/>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab fx:id="themTab" text="Thêm" styleClass="tab-with-border">
+                    <content>
+                        <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
+                            <TextField fx:id="amountField" promptText="Số Tiền"/>
+                            <ComboBox fx:id="categoryComboBox" promptText="Danh Mục"/>
+                            <DatePicker fx:id="datePicker"/>
+                            <ComboBox fx:id="typeComboBox" promptText="Loại Chi/Thu"/>
+
+                            <HBox spacing="10" alignment="CENTER">
+                                <Button text="Thêm Chi Tiêu" onAction="#addExpense"/>
+                                <Button text="Thêm Thu Nhập" onAction="#addIncome"/>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab fx:id="doanhThuTab" text="Doanh Thu" styleClass="tab-with-border">
+                    <content>
+                        <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
+                            <Label fx:id="totalLabel" text="Tổng Chi: 0 | Tổng Thu: 0"/>
+                            <Label fx:id="revenueLabel" text="Tổng Doanh Thu: 0"/>
+                            <Button fx:id="calculateRevenueButton" text="Tính Doanh Thu" onAction="#calculateRevenue"/>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab fx:id="bieuDoTab" text="Biểu Đồ" styleClass="tab-with-border">
+                    <content>
+                        <TabPane prefWidth="600" prefHeight="600" styleClass="tab-pane-with-border">
+                            <tabs>
+                                <Tab fx:id="bieuDoChiTab" text="Biểu Đồ Chi" styleClass="tab-with-border">
+                                    <content>
+                                        <VBox spacing="20" alignment="CENTER">
+                                            <PieChart fx:id="expenseChart" title="Tiền Chi Theo Danh Mục" prefHeight="400" prefWidth="800"/>
+                                        </VBox>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="bieuDoThuTab" text="Biểu Đồ Thu" styleClass="tab-with-border">
+                                    <content>
+                                        <VBox spacing="20" alignment="CENTER">
+                                            <PieChart fx:id="incomeChart" title="Tiền Thu Theo Danh Mục" prefHeight="400" prefWidth="800"/>
+                                        </VBox>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="locTab" text="Lọc" styleClass="tab-with-border">
+                    <content>
+                        <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
+                            <Label text="Chọn Loại Chi hoặc Thu"/>
+                            <ComboBox fx:id="filterTypeComboBox" promptText="Loại"/>
+                            <Label text="Chọn Danh Mục"/>
+                            <ComboBox fx:id="filterCategoryComboBox" promptText="Danh Mục"/>
+                            <Button text="Áp dụng Lọc" onAction="#applyFilter"/>
+                            <TableView fx:id="filterTable" prefHeight="400" prefWidth="600"/>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab fx:id="timKiemTab" text="Tìm Kiếm" styleClass="tab-with-border">
+                    <content>
+                        <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
+                            <Label text="Tìm Kiếm Theo Khoảng Giá"/>
+                            <HBox spacing="10">
+                                <TextField fx:id="searchMinAmountField" promptText="Giá Thấp Nhất"/>
+                                <TextField fx:id="searchMaxAmountField" promptText="Giá Cao Nhất"/>
+                            </HBox>
+                            <Label text="Tìm Kiếm Theo Tháng"/>
+                            <DatePicker fx:id="searchDatePicker"/>
+                            <Button text="Tìm Kiếm" onAction="#searchRecords"/>
+                            <TableView fx:id="searchTable" prefHeight="400" prefWidth="600"/>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>
