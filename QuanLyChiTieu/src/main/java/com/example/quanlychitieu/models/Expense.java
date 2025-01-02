@@ -24,7 +24,6 @@ public class Expense implements Comparable<Expense> {
         this.type = new SimpleObjectProperty<>(type);
     }
 
-    // Properties for binding
     public ObjectProperty<Double> amountProperty() {
         return amount;
     }
@@ -41,8 +40,6 @@ public class Expense implements Comparable<Expense> {
         return type;
     }
 
-
-    // Getters
     public Double getAmount() {
         return amount.get();
     }
@@ -62,7 +59,6 @@ public class Expense implements Comparable<Expense> {
         return percentage;
     }
 
-    // Setters
     public void setAmount(Double amount) {
         this.amount.set(amount);
     }

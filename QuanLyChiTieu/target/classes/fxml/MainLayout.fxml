@@ -12,7 +12,6 @@
     </stylesheets>
 
     <children>
-        <!-- MenuBar at the top -->
         <MenuBar>
             <Menu text="Chức Năng">
                 <MenuItem text="Danh Sách" onAction="#showDanhSachTab"/>
@@ -24,7 +23,6 @@
             </Menu>
         </MenuBar>
 
-        <!-- TabPane for content -->
         <TabPane fx:id="tabPane" prefWidth="600" prefHeight="600" styleClass="tab-pane-with-border"
                  AnchorPane.topAnchor="30" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
             <tabs>
@@ -97,18 +95,25 @@
                 <Tab fx:id="timKiemTab" text="Tìm Kiếm" styleClass="tab-with-border">
                     <content>
                         <VBox spacing="10" alignment="CENTER_LEFT" prefWidth="600" prefHeight="600">
-                            <Label text="Tìm Kiếm Theo Khoảng Giá"/>
-                            <HBox spacing="10">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Tìm Kiếm Theo Khoảng Giá"/>
                                 <TextField fx:id="searchMinAmountField" promptText="Giá Thấp Nhất"/>
                                 <TextField fx:id="searchMaxAmountField" promptText="Giá Cao Nhất"/>
                             </HBox>
-                            <Label text="Tìm Kiếm Theo Tháng"/>
-                            <DatePicker fx:id="searchDatePicker"/>
-                            <Button text="Tìm Kiếm" onAction="#searchRecords"/>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Tìm Kiếm Theo Tháng"/>
+                                <DatePicker fx:id="searchDatePicker"/>
+                            </HBox>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Button text="Tìm Kiếm" onAction="#searchRecords"/>
+                            </HBox>
+
                             <TableView fx:id="searchTable" prefHeight="400" prefWidth="600"/>
                         </VBox>
                     </content>
                 </Tab>
+
             </tabs>
         </TabPane>
     </children>

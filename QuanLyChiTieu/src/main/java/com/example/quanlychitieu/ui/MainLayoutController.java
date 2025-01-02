@@ -33,8 +33,6 @@ public class MainLayoutController {
     @FXML
     private Label revenueLabel;
     @FXML
-    private Button calculateRevenueButton;
-    @FXML
     private PieChart expenseChart;
     @FXML
     private PieChart incomeChart;
@@ -49,9 +47,9 @@ public class MainLayoutController {
     @FXML
     private DatePicker searchDatePicker;
     @FXML
-    private TableView<Expense> filterTable; // Table for filtered results
+    private TableView<Expense> filterTable;
     @FXML
-    private TableView<Expense> searchTable; // Table for search results
+    private TableView<Expense> searchTable;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -61,49 +59,49 @@ public class MainLayoutController {
     @FXML
     private void showDanhSachTab() {
         if (!tabPane.getTabs().contains(danhSachTab)) {
-            tabPane.getTabs().add(danhSachTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(danhSachTab);
         }
-        tabPane.getSelectionModel().select(danhSachTab); // Switch to the tab
+        tabPane.getSelectionModel().select(danhSachTab);
     }
 
     @FXML
     private void showThemTab() {
         if (!tabPane.getTabs().contains(themTab)) {
-            tabPane.getTabs().add(themTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(themTab);
         }
-        tabPane.getSelectionModel().select(themTab); // Switch to the tab
+        tabPane.getSelectionModel().select(themTab);
     }
 
     @FXML
     private void showDoanhThuTab() {
         if (!tabPane.getTabs().contains(doanhThuTab)) {
-            tabPane.getTabs().add(doanhThuTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(doanhThuTab);
         }
-        tabPane.getSelectionModel().select(doanhThuTab); // Switch to the tab
+        tabPane.getSelectionModel().select(doanhThuTab);
     }
 
     @FXML
     private void showBieuDoTab() {
         if (!tabPane.getTabs().contains(bieuDoTab)) {
-            tabPane.getTabs().add(bieuDoTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(bieuDoTab);
         }
-        tabPane.getSelectionModel().select(bieuDoTab); // Switch to the tab
+        tabPane.getSelectionModel().select(bieuDoTab);
     }
 
     @FXML
     private void showLocTab() {
         if (!tabPane.getTabs().contains(locTab)) {
-            tabPane.getTabs().add(locTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(locTab);
         }
-        tabPane.getSelectionModel().select(locTab); // Switch to the tab
+        tabPane.getSelectionModel().select(locTab);
     }
 
     @FXML
     private void showTimKiemTab() {
         if (!tabPane.getTabs().contains(timKiemTab)) {
-            tabPane.getTabs().add(timKiemTab);  // Re-add the tab if it was closed
+            tabPane.getTabs().add(timKiemTab);
         }
-        tabPane.getSelectionModel().select(timKiemTab); // Switch to the tab
+        tabPane.getSelectionModel().select(timKiemTab);
     }
 
 
@@ -213,19 +211,24 @@ public class MainLayoutController {
     @FXML
     private void searchRecords() {
         try {
-            double minAmount = Double.parseDouble(searchMinAmountField.getText());
-            double maxAmount = Double.parseDouble(searchMaxAmountField.getText());
+            String minAmountText = searchMinAmountField.getText();
+            String maxAmountText = searchMaxAmountField.getText();
             LocalDate selectedMonth = searchDatePicker.getValue();
+
+            Double minAmount = (minAmountText == null || minAmountText.isEmpty()) ? null : Double.parseDouble(minAmountText);
+            Double maxAmount = (maxAmountText == null || maxAmountText.isEmpty()) ? null : Double.parseDouble(maxAmountText);
 
             ObservableList<Expense> searchResults = FXCollections.observableArrayList();
 
-            searchResults.setAll(expenseTree.inOrderTraversal().stream()
-                    .filter(expense -> expense.getAmount() >= minAmount && expense.getAmount() <= maxAmount &&
+            searchResults.addAll(expenseTree.inOrderTraversal().stream()
+                    .filter(expense -> (minAmount == null || expense.getAmount() >= minAmount) &&
+                            (maxAmount == null || expense.getAmount() <= maxAmount) &&
                             (selectedMonth == null || expense.getDate().getMonth().equals(selectedMonth.getMonth())))
                     .collect(Collectors.toList()));
 
             searchResults.addAll(incomeTree.inOrderTraversal().stream()
-                    .filter(expense -> expense.getAmount() >= minAmount && expense.getAmount() <= maxAmount &&
+                    .filter(expense -> (minAmount == null || expense.getAmount() >= minAmount) &&
+                            (maxAmount == null || expense.getAmount() <= maxAmount) &&
                             (selectedMonth == null || expense.getDate().getMonth().equals(selectedMonth.getMonth())))
                     .collect(Collectors.toList()));
 
@@ -259,17 +262,15 @@ public class MainLayoutController {
             }
 
             Expense expense = new Expense(amount, category, date, Expense.Type.CHI);
-            expenseTree.insert(expense); // Insert the new expense into the tree
-            setupTable(expenseTable, Expense.Type.CHI); // Update the table with the new data
-            updateExpenseChart();  // Update the chart after adding a new expense
-            updateTotalLabel(); // Update the total label to reflect new totals
+            expenseTree.insert(expense);
+            setupTable(expenseTable, Expense.Type.CHI);
+            updateExpenseChart();
+            updateTotalLabel();
 
-            // Clear input fields
             amountField.clear();
             categoryComboBox.setValue(null);
             datePicker.setValue(null);
 
-            // Show success message
             showSuccess("Chi tiêu đã được thêm thành công!");
         } catch (NumberFormatException e) {
             showError("Vui lòng nhập số hợp lệ cho số tiền.");
@@ -285,7 +286,6 @@ public class MainLayoutController {
                 showError("Vui lòng chọn loại thu.");
                 return;
             }
-
             double amount = Double.parseDouble(amountField.getText());
             String category = categoryComboBox.getValue();
             LocalDate date = datePicker.getValue();
@@ -296,17 +296,15 @@ public class MainLayoutController {
             }
 
             Expense income = new Expense(amount, category, date, Expense.Type.THU);
-            incomeTree.insert(income); // Insert the new income into the tree
-            setupTable(incomeTable, Expense.Type.THU); // Update the table with the new data
-            updateIncomeChart();  // Update the chart after adding a new income
-            updateTotalLabel(); // Update the total label to reflect new totals
+            incomeTree.insert(income);
+            setupTable(incomeTable, Expense.Type.THU);
+            updateIncomeChart();
+            updateTotalLabel();
 
-            // Clear input fields
             amountField.clear();
             categoryComboBox.setValue(null);
             datePicker.setValue(null);
 
-            // Show success message
             showSuccess("Thu nhập đã được thêm thành công!");
         } catch (NumberFormatException e) {
             showError("Vui lòng nhập số hợp lệ cho số tiền.");
@@ -316,7 +314,6 @@ public class MainLayoutController {
 
 
     private void updateExpenseChart() {
-        // Cập nhật biểu đồ chi tiêu
         expenseChart.getData().clear();
         ObservableList<PieChart.Data> expenseData = FXCollections.observableArrayList();
 
@@ -336,14 +333,12 @@ public class MainLayoutController {
     }
 
     private void updateIncomeChart() {
-        // Cập nhật biểu đồ thu nhập
         incomeChart.getData().clear();
         ObservableList<PieChart.Data> incomeData = FXCollections.observableArrayList();
 
         double totalIncome = incomeTree.inOrderTraversal().stream()
                 .mapToDouble(Expense::getAmount)
                 .sum();
-
         incomeTree.inOrderTraversal().stream()
                 .collect(Collectors.groupingBy(Expense::getCategory, Collectors.summingDouble(Expense::getAmount)))
                 .forEach((category, totalAmount) -> {

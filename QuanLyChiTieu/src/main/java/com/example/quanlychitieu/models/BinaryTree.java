@@ -18,7 +18,6 @@ public class BinaryTree<T extends Comparable<T>> {
         }
     }
 
-    // Add method to insert a new node
     public void add(T data) {
         root = addRecursive(root, data);
     }
@@ -48,18 +47,15 @@ public class BinaryTree<T extends Comparable<T>> {
             return root;
         }
 
-        // Compare the data with the root and insert accordingly
         if (data.compareTo(root.data) < 0) {
             root.left = insertRec(root.left, data);  // Insert in the left subtree
         } else if (data.compareTo(root.data) > 0) {
             root.right = insertRec(root.right, data);  // Insert in the right subtree
         }
 
-        // Return the (unchanged) node pointer
         return root;
     }
 
-    // In-order traversal
     public List<T> inOrderTraversal() {
         List<T> result = new ArrayList<>();
         inOrderTraversalRecursive(root, result);
@@ -74,7 +70,6 @@ public class BinaryTree<T extends Comparable<T>> {
         }
     }
 
-    // Check if the tree contains a specific element
     public boolean contains(T data) {
         return containsRecursive(root, data);
     }
@@ -91,7 +86,7 @@ public class BinaryTree<T extends Comparable<T>> {
             return containsRecursive(current.right, data);
         }
 
-        return true; // Found
+        return true;
     }
 
     public List<T> filterByCategory(Expense.Type type, String category) {
@@ -102,18 +97,15 @@ public class BinaryTree<T extends Comparable<T>> {
 
     private void filterByCategoryRecursive(Node<T> node, List<T> result, Expense.Type type, String category) {
         if (node != null) {
-            // Đệ quy vào cây trái
             filterByCategoryRecursive(node.left, result, type, category);
 
-            // Kiểm tra đối tượng Expense
             if (node.data instanceof Expense) {
                 Expense expense = (Expense) node.data;
                 if (expense.getType() == type && expense.getCategory().equals(category)) {
-                    result.add(node.data); // Thêm vào kết quả lọc
+                    result.add(node.data);
                 }
             }
-
-            // Đệ quy vào cây phải
+            
             filterByCategoryRecursive(node.right, result, type, category);
         }
     }

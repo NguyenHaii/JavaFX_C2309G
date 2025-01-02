@@ -14,10 +14,9 @@ public class ExpenseManagerApp extends Application {
 
 
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Quản Lý Chi Tiêu");
+        primaryStage.setTitle("Personal Budget");
         primaryStage.setScene(scene);
 
-        // Cập nhật kích thước để toàn màn hình
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
